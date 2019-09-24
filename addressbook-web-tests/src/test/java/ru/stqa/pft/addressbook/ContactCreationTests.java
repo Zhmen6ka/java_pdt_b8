@@ -18,6 +18,10 @@ public class ContactCreationTests {
     driver = new ChromeDriver();
     driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     driver.get("http://localhost/addressbook/edit.php");
+    login();
+  }
+
+  private void login() {
     driver.findElement(By.name("user")).click();
     driver.findElement(By.name("user")).clear();
     driver.findElement(By.name("user")).sendKeys("admin");
@@ -29,7 +33,21 @@ public class ContactCreationTests {
 
   @Test
   public void testContactCreation() throws Exception {
-    driver.findElement(By.linkText("add new")).click();
+    initContactCreation();
+    fillContactForm();
+    submitContactCreation();
+    gotoHomePage();
+  }
+
+  private void gotoHomePage() {
+    driver.findElement(By.linkText("home page")).click();
+  }
+
+  private void submitContactCreation() {
+    driver.findElement(By.xpath("(//input[@name='submit'])[2]")).click();
+  }
+
+  private void fillContactForm() {
     driver.findElement(By.name("firstname")).click();
     driver.findElement(By.name("firstname")).clear();
     driver.findElement(By.name("firstname")).sendKeys("Ivanova");
@@ -45,8 +63,10 @@ public class ContactCreationTests {
     driver.findElement(By.name("email")).click();
     driver.findElement(By.name("email")).clear();
     driver.findElement(By.name("email")).sendKeys("ZhmenkaX@mail.ru");
-    driver.findElement(By.xpath("(//input[@name='submit'])[2]")).click();
-    driver.findElement(By.linkText("home page")).click();
+  }
+
+  private void initContactCreation() {
+    driver.findElement(By.linkText("add new")).click();
   }
 
   @AfterMethod(alwaysRun = true)
